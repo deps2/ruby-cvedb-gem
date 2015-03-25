@@ -1,14 +1,14 @@
 class CreateImpacts < ActiveRecord::Migration
   def self.up
-    create_table :impacts do |t|
+    create_table :cvedb_impacts do |t|
       t.string :name
 
       t.timestamps
     end
-    add_index :impacts, :name
+    add_index :cvedb_impacts, :name
   end
 
   def self.down
-    drop_table :impacts
+    drop_table :cvedb_impacts
   end
 end

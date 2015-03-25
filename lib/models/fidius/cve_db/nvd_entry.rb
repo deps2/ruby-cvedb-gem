@@ -1,4 +1,4 @@
-class FIDIUS::CveDb::NvdEntry < FIDIUS::CveDb::CveConnection
+class FIDIUS::CveDb::NvdEntry < FIDIUS::CveDb::CveDbBase
   attr_accessible :cve, :cwe, :summary, :published, :last_modified, :cvss
   has_one :cvss
   has_one :mscve

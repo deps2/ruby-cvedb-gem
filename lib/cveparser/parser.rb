@@ -17,9 +17,15 @@ module FIDIUS
     include NVDParserModel
     
     # Parse Version 2.0 XML-File from nvd.nist.gov.     
-    def self.parse_cve_file file
-      
-      doc = Nokogiri::XML(File.open(file))
+    def self.parse_cve_file(file)
+
+      if file.end_with?('.gz')
+        file_contents = Zlib::GzipReader.open(file)
+      else
+        file_contents = File.open(file)
+      end
+
+      doc = Nokogiri::XML(file_contents)
       doc.css("nvd").each do |nvd| 
         version = nvd.attributes['nvd_xml_version'].value
         if version != "2.0"

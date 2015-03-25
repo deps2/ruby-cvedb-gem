@@ -1,6 +1,6 @@
 class CreateXmls < ActiveRecord::Migration
   def self.up
-    create_table :xmls do |t|
+    create_table :cvedb_xmls do |t|
       t.string :name
       t.datetime :create_time
 
@@ -9,6 +9,6 @@ class CreateXmls < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :xmls
+    drop_table :cvedb_xmls
   end
 end

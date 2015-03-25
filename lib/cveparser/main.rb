@@ -1,6 +1,7 @@
 require "#{FIDIUS::CveDb::GEM_BASE}/cveparser/parser"
 require "#{FIDIUS::CveDb::GEM_BASE}/cveparser/rails_store"
 require "#{FIDIUS::CveDb::GEM_BASE}/cveparser/ms_parser"
+require "#{FIDIUS::CveDb::GEM_BASE}/cveparser/cveparser"
 
 include FIDIUS::CveDb
 
@@ -12,16 +13,14 @@ PARAMS = {
 }
 
 case ARGV[0]
-  when '-p' 
-    entries = FIDIUS::NVDParser.parse_cve_file ARGV[1]  
-    RailsStore.create_new_entries(ARGV[1].split("/").last, entries)
+  when '-p'
+    CveParser::parse(ARGV[1])
   when '-f'
-    RailsStore.fix_product_duplicates
+    CveParser::fix_duplicates
   when '-u'
-    entries = FIDIUS::NVDParser.parse_cve_file ARGV[1]
-    RailsStore.update_cves(entries)
+    CveParser::update(ARGV[1])
   when '-m'
-    FIDIUS::MSParser.parse_ms_cve
+    CveParser::parse_ms_cve
   else
     puts "ERROR: You've passed none or an unknown parameter, available "+
       "parameters are:"
