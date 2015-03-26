@@ -6,7 +6,6 @@ module FIDIUS
     class Railtie < Rails::Railtie
       rake_tasks do
         load "tasks/parse_cves.rake"
-        load "tasks/db_backup.rake"
         load "tasks/nvd_migrate.rake"
       end       
     end

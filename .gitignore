@@ -1,3 +1,8 @@
 .project
 pkg/
 *.gem
+
+# Ignore RubyMine configuration that shouldn't be shared
+.iws
+.idea/
+vendor/bundle/

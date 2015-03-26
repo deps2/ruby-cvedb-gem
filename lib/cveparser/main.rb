@@ -14,13 +14,13 @@ PARAMS = {
 
 case ARGV[0]
   when '-p'
-    CveParser::parse(ARGV[1])
+    Environment::parse_from_file(ARGV[1])
   when '-f'
-    CveParser::fix_duplicates
+    Environment::fix_duplicates
   when '-u'
-    CveParser::update(ARGV[1])
+    Environment::update_from_file(ARGV[1])
   when '-m'
-    CveParser::parse_ms_cve
+    Environment::parse_ms_cve
   else
     puts "ERROR: You've passed none or an unknown parameter, available "+
       "parameters are:"
