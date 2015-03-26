@@ -19,6 +19,7 @@ module FIDIUS
     # Parse Version 2.0 XML-File from nvd.nist.gov.     
     def self.parse_cve_file(file)
 
+      puts "[*] Parsing: #{file}"
       if file.end_with?('.gz')
         file_contents = Zlib::GzipReader.open(file)
       else

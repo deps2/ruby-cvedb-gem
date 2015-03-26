@@ -50,9 +50,9 @@ namespace :nvd do
   desc "Downloads the modified.xml from nvd.org and stores it's content in the database."
   task :update => :environment do
     wget MODIFIED_XML
-    FIDIUS::CveDb::CveParser::update(MODIFIED_XML)
+    FIDIUS::CveDb::CveParser::update(xml_path(MODIFIED_XML))
     wget RECENT_XML
-    FIDIUS::CveDb::CveParser::update(RECENT_XML)
+    FIDIUS::CveDb::CveParser::update(xml_path(RECENT_XML))
   end
 
   desc "Initializes the CVE-DB, parses all annual CVE-XMLs and removes duplicates."
@@ -75,6 +75,7 @@ end
 # Initializes the CVE-DB with all CVE data available in the NVD.
 def init
   local_x = local_xmls
+  ap local_x
   if local_x
     puts "WARNING: The XML directory already contains XML files. "+
       "nvd:initialize is intended to be used only once to set up the "+
@@ -105,7 +106,7 @@ def init
   end
   puts "[*] All available files downloaded, parsing the XMLs now."
   l_ann_xmls.each do |xml|
-    FIDIUS::CveDb::CveParser::parse(xml)
+    FIDIUS::CveDb::CveParser::parse(xml_path(xml))
   end
 
   puts "[*] All local XMLs parsed."
@@ -113,11 +114,15 @@ def init
   puts "[*] Initializing done."
 end
 
+def xml_path(entry)
+  File.join(XML_DIR, entry)
+end
+
 # Returns an array of xmls that were previously downloaded
 def local_xmls
   if Dir.exists?(XML_DIR)
     entries = []
-    dir = Dir.new XML_DIR
+    dir = Dir.new(XML_DIR)
     dir.each do |entry|
       entries << entry if entry =~ /.+\.xml.gz$/
     end
