@@ -1,6 +1,6 @@
 class CreateCvsses < ActiveRecord::Migration
   def self.up
-    create_table :cvsses do |t|
+    create_table :cvedb_cvsses do |t|
       t.float :score
       t.string :source
       t.datetime :generated_on
@@ -14,6 +14,6 @@ class CreateCvsses < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :cvsses
+    drop_table :cvedb_cvsses
   end
 end
