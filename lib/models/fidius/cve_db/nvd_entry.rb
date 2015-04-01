@@ -6,6 +6,7 @@ class FIDIUS::CveDb::NvdEntry < FIDIUS::CveDb::CveDbBase
   has_many :vulnerable_softwares
   has_many :vulnerable_configurations
   has_many :vulnerability_references
+  has_many :products, :through => :vulnerable_softwares
 
   validates_uniqueness_of :cve
   
