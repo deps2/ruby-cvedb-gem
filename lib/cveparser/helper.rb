@@ -9,7 +9,7 @@ module FIDIUS::CveDb::Helper
   XML_DIR = File.join(Dir.pwd, 'cveparser', 'xml')
   ANNUALLY_XML = /nvdcve-2[.]0-(\d{4})[.]xml/
   EXTENSION = '.xml.gz'
-  MIN_CVE_YEAR = 2014
+  MIN_CVE_YEAR = 2010
 
   # modified xml includes all recent published and modified cve entries
   MODIFIED_XML = 'nvdcve-2.0-modified.xml'
