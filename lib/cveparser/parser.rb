@@ -41,8 +41,16 @@ module FIDIUS
     
       entries = []
       entry_count = 0
+      unmatched_items = 0
       doc.css('nvd > entry').each do |entry|
-        entries << single_entry(entry)
+        parsed_entry = single_entry(entry)
+
+        if matches_filter?(parsed_entry)
+          entries << parsed_entry
+        else
+          unmatched_items += 1
+        end
+
         entry_count += 1
         if entry_count % 100 == 0 and entry_count > 0
           puts "Parsed #{entry_count} CVE Entries."
@@ -50,11 +58,24 @@ module FIDIUS
       end
       end_time = Time.now
       puts "[*] Finished parsing, parsed #{entries.size} entries in " +
-           "#{(end_time-start_time).round} seconds."
+           "#{(end_time-start_time).round} seconds. Filtered out #{unmatched_items}"
       entries
     end
     
     private  
+
+    def self.matches_filter?(entry)
+      return true if FIDIUS::CveDb::Configuration.configuration.fetch_products_filter.empty?
+      return false if entry.vulnerable_software.nil?
+
+      entry.vulnerable_software.each do |software|
+        FIDIUS::CveDb::Configuration.configuration.fetch_products_filter.each do |filter|
+          return true if software.include?(filter)
+        end
+      end
+
+      false
+    end
 
     # Parse single NVD-Entry and store it in an NVDEntry Object
     def self.single_entry entry

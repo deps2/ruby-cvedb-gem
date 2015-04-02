@@ -1,6 +1,7 @@
 require "#{FIDIUS::CveDb::GEM_BASE}/cveparser/parser"
 require "#{FIDIUS::CveDb::GEM_BASE}/cveparser/rails_store"
 require "#{FIDIUS::CveDb::GEM_BASE}/cveparser/ms_parser"
+require "#{FIDIUS::CveDb::GEM_BASE}/cveparser/configuration"
 
 module FIDIUS::CveDb::Helper
   BASE_URL = 'http://static.nvd.nist.gov/feeds/xml/cve/'
@@ -9,7 +10,6 @@ module FIDIUS::CveDb::Helper
   XML_DIR = File.join(Dir.pwd, 'cveparser', 'xml')
   ANNUALLY_XML = /nvdcve-2[.]0-(\d{4})[.]xml/
   EXTENSION = '.xml.gz'
-  MIN_CVE_YEAR = 2010
 
   # modified xml includes all recent published and modified cve entries
   MODIFIED_XML = 'nvdcve-2.0-modified.xml'
@@ -43,11 +43,15 @@ module FIDIUS::CveDb::Helper
 
   def self.relevant_xml?(xml)
     match = xml.match(ANNUALLY_XML)
-    match.present? and match[1].to_i > MIN_CVE_YEAR
+    match.present? and match[1].to_i > FIDIUS::CveDb::Configuration.configuration.min_year_fetch
   end
 
   # Initializes the CVE-DB with all CVE data available in the NVD.
   def self.initialize_db
+    puts "[*] Configuration"
+    puts "  - min_year_fetch = #{FIDIUS::CveDb::Configuration.configuration.min_year_fetch}"
+    puts "  - fetch_products = #{FIDIUS::CveDb::Configuration.configuration.fetch_products_filter}"
+
     local_x = local_xmls
     if local_x
       puts "WARNING: The XML directory already contains XML files. "+

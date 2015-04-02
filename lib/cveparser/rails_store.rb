@@ -62,7 +62,7 @@ module FIDIUS::CveDb
     #           products in one hash and store them afterwards instead of using
     #           Rails find_or_create_by_,,,
     #  false -> The products are stored with each product in the database.
-    def self.save_entry entry, with_products_hash
+    def self.save_entry(entry, with_products_hash)
 
       cvss_params = {}
       if entry.cvss
