@@ -10,6 +10,7 @@ module FIDIUS
     # tasks. Otherwise they are symlinked.
     require 'fidius-cvedb/railtie' unless RAILS_VERSION < 3
     require 'cveparser/configuration'
+    require 'cveparser/helper'
 
     require 'models/fidius/cve_db/cve_db_base'
 
