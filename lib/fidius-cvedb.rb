@@ -11,6 +11,8 @@ module FIDIUS
     require 'fidius-cvedb/railtie' unless RAILS_VERSION < 3
     require 'cveparser/configuration'
 
+    require 'models/fidius/cve_db/cve_db_base'
+
     Dir.glob(File.join GEM_BASE, 'models', 'fidius', 'cve_db', '*.rb') do |rb|
       require rb
     end
