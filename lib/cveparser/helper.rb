@@ -12,8 +12,8 @@ module FIDIUS::CveDb::Helper
   EXTENSION = '.xml.gz'
 
   # modified xml includes all recent published and modified cve entries
-  MODIFIED_XML = 'nvdcve-2.0-modified.xml'
-  RECENT_XML = 'nvdcve-2.0-recent.xml'
+  MODIFIED_XML = 'nvdcve-2.0-modified.xml.gz'
+  RECENT_XML = 'nvdcve-2.0-recent.xml.gz'
 
 
   def self.parse_from_file(file)
