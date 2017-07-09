@@ -119,8 +119,7 @@ module FIDIUS::CveDb
                            })
         cves.each do |cve|
           # Save the relations between vulnerable software and nvd_entries
-          VulnerableSoftware.find_or_create_by_nvd_entry_id_and_product_id(
-              NvdEntry.find_by_cve(cve).id, p.id)
+          VulnerableSoftware.find_or_create_by(nvd_entry_id: NvdEntry.find_by_cve(cve).id, product_id: p.id)
         end
         if i % 100 == 0
           puts "Stored 100 products [#{i}/#{@products.size}]"
@@ -134,9 +133,14 @@ module FIDIUS::CveDb
     def self.save_product product, cve
       values = product.to_s.split(":")
       values[1].sub!("/", "")
-      p = Product.find_or_create_by_part_and_vendor_and_product_and_version_and_update_nr_and_edition_and_language(
-          values[1], values[2], values[3], values[4], values[5], values[6], values[7])
-      VulnerableSoftware.find_or_create_by_product_id_and_nvd_entry_id(p.id, NvdEntry.find_by_cve(cve).id)
+      p = Product.find_or_create_by(part: values[1],
+                                    vendor: values[2],
+                                    product: values[3],
+                                    version: values[4],
+                                    update_nr: values[5],
+                                    edition: values[6],
+                                    language: values[7])
+      VulnerableSoftware.find_or_create_by(product_id: p.id, nvd_entry_id: NvdEntry.find_by_cve(cve).id)
     end
 
     # Removes duplicates from the Products-table in the database
@@ -214,18 +218,16 @@ module FIDIUS::CveDb
           xml_entry.vulnerable_software.each do |xml_product|
             values = xml_product.to_s.split(":")
             values[1].sub!("/", "")
-            product = Product.find_or_initialize_by_part_and_vendor_and_product_and_version_and_update_nr_and_edition_and_language({
-                                                                                                                                       :part => values[1],
-                                                                                                                                       :vendor => values[2],
-                                                                                                                                       :product => values[3],
-                                                                                                                                       :version => values[4],
-                                                                                                                                       :update_nr => values[5],
-                                                                                                                                       :edition => values[6],
-                                                                                                                                       :language => values[7]
-                                                                                                                                   })
+            product = Product.find_or_initialize_by(part: values[1],
+                                                    vendor: values[2],
+                                                    product: values[3],
+                                                    version: values[4],
+                                                    update_nr: values[5],
+                                                    edition: values[6],
+                                                    language: values[7])
 
             if product.new_record?
-              VulnerableSoftware.find_or_create_by_nvd_entry_id_and_product_id(nvd_entry.id, product.id)
+              VulnerableSoftware.find_or_create_by(nvd_entry_id: nvd_entry.id, product_id: product.id)
               product.save!
             end
 

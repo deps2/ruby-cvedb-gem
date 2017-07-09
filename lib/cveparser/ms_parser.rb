@@ -22,7 +22,7 @@ module FIDIUS
         cves.each do |cve|       
           existing_cve = NvdEntry.find_by_cve(cve.strip)
           if existing_cve
-            Mscve.find_or_create_by_nvd_entry_id_and_name(existing_cve.id, ms)
+            Mscve.find_or_create_by(nvd_entry_id: existing_cve.id, name: ms)
             puts "Found: #{existing_cve.cve}."
             counter += 1
           end
