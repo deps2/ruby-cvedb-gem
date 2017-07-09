@@ -4,7 +4,7 @@ class CreateDefaultImpacts < ActiveRecord::Migration
   
   def self.up
     IMPACT_DEFAULTS.each do |name|
-      FIDIUS::CveDb::Impact.find_or_create_by_name(name)
+      FIDIUS::CveDb::Impact.find_or_create_by(name: name)
     end
   end
 
